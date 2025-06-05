@@ -5,8 +5,8 @@ import seaborn as sns
 # 1. Data Loading- Loading all the data into Python using Pandas
 try:
     confirmed = pd.read_csv("data/covid_19_confirmed.csv")
-    deaths = pd.read_csv("data/covid_19_deaths.csv")
-    recovered = pd.read_csv("data/covid_19_recovered.csv")
+    deaths = pd.read_csv("data/covid_19_deaths.csv", header=1)
+    recovered = pd.read_csv("data/covid_19_recovered.csv", header=1)
     print("Your csv files were successfully loaded")
 except Exception as e:
     print(f"Error loading csv files: {e}")
@@ -33,6 +33,7 @@ def explore_dataset(df, name):
 explore_dataset(confirmed, "Confirmed Cases")
 explore_dataset(deaths, "Deaths Occured")
 explore_dataset(recovered, "Recovered Cases")
+
 
 # Question- 2.2
 # Drop unnecessary columns and sum across all dates for individual countries.
@@ -78,12 +79,19 @@ plt.show()
 plt.close()
 
 
-# question 2.3- plots of confirmed cases over time for china 
-cases_china=confirmed_totals.loc[['China']].reset_index()
-cases_china_melted=pd.melt(cases_china.drop(columns=['Total']),id_vars='Country/Region',var_name="Date",value_name="Confirmed")
+# question 2.3- plots of confirmed cases over time for china
+cases_china = confirmed_totals.loc[["China"]].reset_index()
+cases_china_melted = pd.melt(
+    cases_china.drop(columns=["Total"]),
+    id_vars="Country/Region",
+    var_name="Date",
+    value_name="Confirmed",
+)
 
 # convert to date-time
-cases_china_melted['Date'] = pd.to_datetime(cases_china_melted['Date'], format="%m/%d/%y")
+cases_china_melted["Date"] = pd.to_datetime(
+    cases_china_melted["Date"], format="%m/%d/%y"
+)
 
 # Plot the data now
 plt.figure(figsize=(12, 5))
@@ -97,3 +105,18 @@ plt.tight_layout()
 plt.savefig("visuals/china_covid_trend.png", dpi=300)
 plt.show()
 plt.close()
+
+
+# handling missing data
+# for confirmed dataset
+def Handle_missing(df, name):
+    print(f"\n{name} dataset being processed for missing values")
+    df["Province/State"] = df["Province/State"].fillna("All Provinces")
+    df = df.dropna(subset=["Lat", "Long"])
+    print("\nAfter processing")
+    print(df.isnull().sum())
+
+
+Handle_missing(confirmed, "Confirmed Cases")
+Handle_missing(deaths, "Deaths")
+Handle_missing(recovered, "Recovered Cases")

@@ -107,7 +107,7 @@ plt.show()
 plt.close()
 
 
-# handling missing data
+# Ques 3 and 4 - handling missing data
 # for confirmed dataset
 def Handle_missing(df, name):
     print(f"\n{name} dataset being processed for missing values")

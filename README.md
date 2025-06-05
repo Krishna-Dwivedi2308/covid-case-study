@@ -97,3 +97,38 @@ We follow a clear sequence of data preparation and visualization steps:
 A clean and informative line chart displaying the progression of confirmed COVID-19 cases over time in **China**, useful for observing the outbreak trend in this country.
 
 ---
+## 🧼 Question 3 & 4: Handling Missing Data in COVID-19 Datasets
+
+This section focuses on **cleaning missing data** in the COVID-19 datasets (`Confirmed`, `Deaths`, `Recovered`). Missing values in key columns can lead to inaccuracies in analysis, so we ensure the data is handled systematically.
+
+---
+
+### ✅ Approach
+
+We define a reusable function `Handle_missing()` to clean missing data across all datasets.
+
+#### 1. 🧮 Define the Cleaning Function
+- Create a function `Handle_missing(df, name)` to:
+  - Print which dataset is being processed.
+  - Clean missing values using specific rules.
+  - Print a summary of missing values after processing.
+
+#### 2. 🏷️ Fill Missing "Province/State"
+- If `"Province/State"` is missing (i.e., `NaN`), fill it with the string `"All Provinces"`:
+  - This helps represent entries where data is only available at the country level.
+
+#### 3. 🗺️ Drop Rows with Missing Coordinates
+- If either `"Lat"` or `"Long"` is missing, **drop the row**:
+  - These geographic coordinates are essential for location-based visualization.
+
+#### 4. 📢 Show Results
+- Display the number of missing values **after processing** to verify cleaning success.
+
+#### 5. 🔁 Apply to All Datasets
+- Run the `Handle_missing()` function on the following datasets:
+  - `confirmed`
+  - `deaths`
+  - `recovered`
+
+---
+
